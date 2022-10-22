@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Task 3 - Sokoban</title>
+  <link rel="icon" type="image/x-icon" href="img/sokoban-icon.png">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body onkeyup="handleKey(event)" onload="initGame()">
+
+  <h1>SOKOBAN</h1>
+
+  <h3>SCORE: <span id="score-counter">'</span></h3>
+
+  <div class="btn-container hide">
+    <h3>GAME OVER</h3>
+    <button class="btn" onclick="restarGame()">RESTART</button>
+  </div>
+
+  <table>
+    <tbody class="board"></tbody>
+  </table>
+
+  <script src="js/util.js"></script>
+  <script src="js/app.js"></script>
+
+
+</body>
+
+</html>

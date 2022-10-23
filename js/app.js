@@ -30,10 +30,11 @@ var gTargetOnBoard
 var gBoxOnTarget
 var gScoreCounter
 var scoreCounter = document.getElementById('score-counter')
-var gIsClock
-var gIsGold
 var gIsGlue
-var gInterval
+var gIntervalClock
+var gIntervalGold
+var gIntervalGlue
+
 
 
 function initGame() {
@@ -48,13 +49,11 @@ function initGame() {
 	gScoreCounter = 100
 	var scoreCounter = document.getElementById('score-counter')
 	scoreCounter.innerHTML = gScoreCounter
-	gIsClock = false
-	gIsGold = false
 	gIsGlue = false
 
-	gInterval = setInterval(addClock, 10000)
-	gInterval = setInterval(addGold, 10000)
-	gInterval = setInterval(addGlue, 10000)
+	gIntervalClock = setInterval(addClock, 10000)
+	gIntervalGold = setInterval(addGold, 10000)
+	gIntervalGlue = setInterval(addGlue, 10000)
 }
 
 
@@ -73,18 +72,17 @@ function buildBoard() {
 				cell.type = WALL
 			}
 
-			// Place walls inside the room
-			board[3][1].type = WALL
-			board[3][2].type = WALL
-			board[3][3].type = WALL
-			board[4][3].type = WALL
-			board[1][6].type = WALL
-			board[2][6].type = WALL
-
 			// Add created cell to the game board
 			board[i][j] = cell
 		}
 	}
+	// Place walls inside the room
+	board[3][1].type = WALL
+	board[3][2].type = WALL
+	board[3][3].type = WALL
+	board[4][3].type = WALL
+	board[1][6].type = WALL
+	board[2][6].type = WALL
 
 	// Place the player
 	board[gPlayerPos.i][gPlayerPos.j].gameElement = PLAYER
@@ -126,11 +124,7 @@ function renderBoard() {
 
 			} else if (currCell.type === TARGET) {
 				cellClass += ' target'
-
-			} else if (currCell.type === GLUE) {
-				cellClass += ' glue'
-
-			}
+			} 
 
 			//Change to template string
 			strHTML += '\t<td class="cell ' + cellClass +
@@ -166,7 +160,7 @@ function moveTo(i, j) {
 	else if (currCell.type != WALL) {
 
 		// Calculate distance to make sure we are moving to a neighbor cell
-		gIDiff = i - gPlayerPos.i
+		gIDiff = i - gPlayerPos.i //
 		gJDiff = j - gPlayerPos.j
 
 
@@ -239,7 +233,7 @@ function moveTo(i, j) {
 				elClockCell.style.backgroundColor = "#c86a61"
 				setTimeout(() => {
 					elClockCell.style.backgroundColor = "#DED6AD"
-					}, 3000)
+					}, 5000)
 
 				setTimeout(() => gIsGlue = false, 5000)
 			}
@@ -356,7 +350,9 @@ function isVictory () {
 // If the game is over
 function gameOver() {
 	gIsGameOn = false
-	clearInterval(gInterval)
+	clearInterval(gIntervalClock)
+	clearInterval(gIntervalGold)
+	clearInterval(gIntervalGlue)
 
 	var elContainer = document.querySelector('.btn-container')
 	elContainer.classList.remove('hide')
@@ -378,19 +374,19 @@ function handleKey(event) {
 	
     switch (event.key) {
         case 'ArrowLeft':
-            moveTo(i, j - 1, 'left')
+            moveTo(i, j - 1)
             break;
 
         case 'ArrowRight':
-            moveTo(i, j + 1, 'right')
+            moveTo(i, j + 1)
             break;
 
         case 'ArrowUp':
-            moveTo(i - 1, j, 'up')
+            moveTo(i - 1, j)
             break;
 
         case 'ArrowDown':
-            moveTo(i + 1, j, 'down')
+            moveTo(i + 1, j)
             break;
     }
 }
